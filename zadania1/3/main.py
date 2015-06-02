@@ -13,9 +13,8 @@ regexp = r"([a-z])\1"	# podwojne wystapienie znaku
 def A():
 	""" Funkcja realizujaca podpunkt A:
 		Dwie identyczne litery obok siebie """
-	for i in list1 + list(list2) + list(list3):
-		if re.search(regexp, i):
-			print i.capitalize()
+	for i in itertools.ifilter(lambda x: re.search(regexp, x), list1 + list(list2) + list(list3)):
+		print i.capitalize()
 
 def B():
 	""" Funkcja realizujaca podpunkt B:
@@ -24,12 +23,13 @@ def B():
 	for i in list1 + list(list2) + list(list3):
 		try:
 			s[len(i)] += (i,)	# nowa krotka z dodanym elementem
-		except KeyError:		# nie ma klucza, musze utworzyc
-			s[len(i)] = (i,)
+		except KeyError:
+			s[len(i)] = (i,)	# nie ma klucza, musze utworzyc
 	print s
 
+#------------------------------------------------------------------------------
 if __name__ == "__main__":
 	try:
-		locals()[sys.argv[1].upper()]()		# wywolanie odpowiedniej funkcji z argumentow
-	except:					# blad argumentow
-		print "Uzycie: %s <A/B>" % sys.argv[0]
+		locals()[sys.argv[1].upper()]()			# wywolanie odpowiedniej funkcji z argumentow
+	except:					
+		print "Uzycie: %s <A/B>" % sys.argv[0]	# blad argumentow
