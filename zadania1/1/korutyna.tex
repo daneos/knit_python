@@ -1,0 +1,31 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{polski}
+
+\begin{document}
+
+\title{Korutyny}
+\author{Grzegorz Kowalski\\\texttt{daneos@daneos.com}}
+\date{\today}
+\maketitle
+
+\section{Opis}
+\textbf{Korutyna} (jest takie słowo w języku polskim?) jest rodzajem podprogramu, którego cechą charakterystyczną jest możliwość wielokrotnego przekazania sterowania do innej korutyny i kontynuowania wykonania od miejsca, w którym zostało zawieszone.\\
+W językach funkcyjnych odpowiednikiem korutyny jest kontynuacja, czyli obiekt reprezentujący zachowany stan wykonywania programu.\\
+Koncepcyjnie korutyny są podobne do wątków i w wielu zastosowaniach są ich dobrym przybliżeniem, jednak podstawową różnicą jest brak współbieżności korutyn.
+Współdziałaniem wątków zarządza system operacyjny, natomiast korutyn - środowisko języka programowania (interpreter, biblioteka standardowa), chociaż niektóre języki programowania (np. Lua) pozwalają na implementacje korutyn za pomocą wątków systemowych.
+
+\section{Przykład}
+\begin{verbatim}
+coroutine producent                   coroutine konsument
+{                                     {
+    while(!kolejka.full())                while(!kolejka.empty())
+    {                                     {
+        kolejka += produkuj()                 konsumuj(kolejka)
+        yield konsument                       yield producent
+    }                                     }
+}                                     }
+\end{verbatim}
+Powyższy pseudokod tworzy producenta, który wypełnia kolejkę i wywołuje kosumenta, który zabiera elementy z kolejki. Kolejne wywołania przeplatają się, kontynuując wykonanie w miejscu w którym skończyły.
+
+\end{document}
