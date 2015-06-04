@@ -5,16 +5,10 @@ from rest_framework.decorators import api_view
 from time import time
 from re import findall
  
-log = [
-	{ "category":["update"], "person":["all"], "time":1433412540, "content":"testtesttest test test!" },
-	{ "category":["inna"], "person":["nikt"], "time":1433412898, "content":"eeeeeeeeeee test test!" },
-	{ "category":["news"], "person":["all"], "time":1433412540, "content":"testtesttest news test!" },
-	{ "category":["update"], "person":["all"], "time":1433412777, "content":"testtesttest time test!" },
-	{ "category":["update"], "person":["john"], "time":1433412540, "content":"testtesttest test john" }
-]
+log = []
 
-parse_category = r"#(\S*)"
-parse_person = r"@(\S*)"
+parse_category = r"\B#(\S*)"
+parse_person = r"\B@(\S*)"		# \B blokuje rozpoznawanie czesci np. adresu e-mail jako osoby
 
 @api_view(["GET", "POST"])
 def home(request):
@@ -24,8 +18,8 @@ def home(request):
 		return Response(sorted(log, key=lambda x: x["time"], reverse=True)[:10])	# sortowanie i zwracanie 10 wpisow
 	elif request.method == "POST":
 		log.append({
-			"category":	findall(parse_category, request.data) or ["none"],
-			"person":	findall(parse_person, request.data) or ["none"],
+			"category":	findall(parse_category, request.data) or ["none"],		# moze byc kilka kategorii w jednym wpisie
+			"person":	findall(parse_person, request.data) or ["none"],		# j.w.
 			"time":		int(time()),
 			"content":	request.data
 			})
@@ -51,4 +45,4 @@ def byPerson(request, per):
 def byTime(request, time):
 	""" Zwraca wpisy wedlug czasu dodania """
 	if request.method == "GET":
-		return Response([ x for x in log if x["time"] == int(time) ])
+		return Response([ x for x in log if x["time"] == int(time) ][:10])	# zwracam tylko 10 ostatnich wpisów

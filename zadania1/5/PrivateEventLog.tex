@@ -1,0 +1,41 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{polski}
+
+\title{Private Event Log}
+\author{Grzegorz Kowalski\\\texttt{daneos@daneos.com}}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Private Event Log to usługa REST zbudowana za pomocą frameworku Django.\\
+Pozwala na dodawanie wpisów za pomocą zapytania HTTP POST oraz pobranie zapisanych wpisów za pomocą HTTP GET.\\
+Private Event Log pozwala na wyszukiwanie wpisów na podstawie kategorii (\#), osób (@) oraz czasu dodania.
+\end{abstract}
+
+\section{Dodawanie wpisów}
+Wpisy dodawane są do logu za pomocą zapytania POST na adres /.
+Aplikacja przyjmuje ciąg znaków sformatowany jako JSON.\\
+Przykładowe zapytanie:
+\begin{verbatim}
+POST / HTTP/1.1
+Host: example.com
+Content-type: application/json
+Content-length: 35
+
+"I just won a lottery #update @all"
+\end{verbatim}
+Efektem wykonania tego zapytania będzie odpowiedź serwera 201 Created.\\
+Aplikacja utworzy nowy wpis w kategorii \texttt{update} przypisany do osób \texttt{all} (w domyśle wszystkich).
+Możliwe jest przypisanie wpisu do kilku kategorii lub kilku osób na raz, używając kilku bloków \texttt{\#\emph{kategoria}} i/lub \texttt{@\emph{osoba}}.\\
+Private Event Log \textbf{nie} usuwa tagów kategorii i osób z tekstu, ponieważ mogą być integralną częścią wiadomości (np.~\texttt{I just lost lottery prize at \#poker with @jane}).
+
+\section{Pobieranie wpisów}
+Wpisy pobiera się za pomocą zapytań GET.\\
+Zapytanie na adres / pobiera 10 ostatnio dodanych wpisów ze wszystkich kategorii i osób.
+Aby pobrać ostatnie wpisy z konkretnej kategorii należy skierować zapytanie na adres \texttt{/category/\emph{kategoria}}, a aby pobrać wpisy przypisane do osób -- na \texttt{/person/\emph{osoba}}. Istnieje również możliwość pobrania wpisu dodanego w konkretnym momencie, poprzez zapytanie na adres \texttt{/time/\emph{unix-timestamp}}.\\
+Wszystkie zapytania zwracają maksymalnie 10 ostatnich pasujących wpisów w formacie JSON.
+
+\end{document}
