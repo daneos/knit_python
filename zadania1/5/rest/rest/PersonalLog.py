@@ -45,4 +45,4 @@ def byPerson(request, per):
 def byTime(request, time):
 	""" Zwraca wpisy wedlug czasu dodania """
 	if request.method == "GET":
-		return Response([ x for x in log if x["time"] == int(time) ][:10])	# zwracam tylko 10 ostatnich wpisów
+		return Response([ x for x in log if x["time"] == int(time) ][:10])	# zwracam tylko 10 ostatnich wpisow
