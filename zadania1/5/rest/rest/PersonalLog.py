@@ -21,7 +21,7 @@ def home(request):
 	""" GET: Zwraca wszystkie wpisy
 		POST: Dodaje nowy wpis """
 	if request.method == "GET":
-		return Response(log)
+		return Response(sorted(log, key=lambda x: x["time"], reverse=True)[:10])	# sortowanie i zwracanie 10 wpisow
 	elif request.method == "POST":
 		log.append({
 			"category":	findall(parse_category, request.data) or ["none"],
@@ -32,19 +32,23 @@ def home(request):
 		return Response(status=status.HTTP_201_CREATED)
 
 @api_view(['GET'])
-def getByCategory(request, cat):
+def byCategory(request, cat):
 	""" Zwraca wpisy tylko z jednej kategorii """
 	if request.method == "GET":
-		return Response([ x for x in log if x["category"].__contains__(cat) ])
+		r = [ x for x in log if x["category"].__contains__(cat) ]		# wybieranie wpisow na podstwaie kategorii
+		r.sort(key=lambda x: x["time"], reverse=True)					# sortowanie wg. czasu dodania
+		return Response(r[:10])				# zwracam tylko 10 ostatnich wpisow
  
 @api_view(['GET'])
-def getByPerson(request, per):
+def byPerson(request, per):
 	""" Zwraca wpisy przefiltrowane po osobie """
 	if request.method == "GET":
-		return Response([ x for x in log if x["person"].__contains__(per) ])
+		r = [ x for x in log if x["person"].__contains__(per) ]			# wybieranie wpisow na podstawie osoby
+		r.sort(key=lambda x: x["time"], reverse=True)					# sortowanie wg. czasu dodania
+		return Response(r[:10])				# zwracam tylko 10 ostatnich wpisow
 
 @api_view(['GET'])
-def getByTime(request, time):
+def byTime(request, time):
 	""" Zwraca wpisy wedlug czasu dodania """
 	if request.method == "GET":
 		return Response([ x for x in log if x["time"] == int(time) ])
