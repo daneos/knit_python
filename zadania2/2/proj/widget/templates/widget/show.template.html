@@ -1,0 +1,30 @@
+{% block DeviceWidget %}
+
+	<div id="device-widget">
+		<h2>{{ device }}</h2>
+		<small>connection: {{ connection }}</small>
+		<table>
+			<tr>
+				<th>Name</th>
+				<th>Value</th>
+				<th>Scalar</th>
+				<th>Numeric</th>
+				<th>Writable</th>
+				<th>Plotable</th>
+				<th>Description</th>
+			</tr>
+			{% for at in attrs %}
+				<tr>
+					<td>{{ at.Name }}</td>
+					<td>{{ at.Value }}</td>
+					<td>{{ at.Scalar }}</td>
+					<td>{{ at.Numeric }}</td>
+					<td>{{ at.Writable }}</td>
+					<td>{{ at.Plotable }}</td>
+					<td>{{ at.Desc|safe }}</td>
+				</tr>
+			{% endfor %}
+		</table>
+	</div>
+
+{% endblock %}
