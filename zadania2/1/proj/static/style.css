@@ -1,0 +1,76 @@
+body						{ margin:0px; }
+
+/* ---------------- BOXES ---------------- */
+.box						{ border:1px solid; width:300px; height:100px; position:relative; }
+.box a						{ text-decoration:none; color:#000; border-bottom:1px dashed; }
+.box a:hover				{ border-bottom:1px dotted; color:#8f3838; }
+/* Event box */
+.box#event					{ background:#c4b6f0; }
+.box#event .mini			{ width:90px; height:90px; float:left; clear:none; position:relative; top:5px; left:5px; }
+.box#event .header			{ font-weight:bold; font-size:.8em; float:right; width:195px; height:8px; }
+.box#event .comment			{ font-size:.7em; float:right; width:195px; }
+/* User box */
+.box#user					{ background:#c8e375; }
+.box#user .avatar			{ width:90px; height:90px; float:left; clear:none; position:relative; top:5px; left:5px; }
+.box#user .name				{ font-weight:bold; font-size:1em; float:right; width:195px; height:0px; }
+.box#user .from				{ font-size:.7em; float:right; width:195px; }
+.box#user .count			{ font-size:.7em; text-align:right; position:absolute; top:-5px; left:245px; width:50px; }
+.box#user .last_seen		{ font-size:.55em; float:right; width:195px; }
+.box#user .edit				{ font-size:.75em; float:right; width:195px; height:2px; }
+.box#user .logout			{ font-size:.75em; float:right; width:195px; }
+.box#user .add				{ font-size:.75em; position:relative; top:-52px; left:210px; line-height:27px; height:50px; }
+/* Gallery box */
+.box#gallery				{ background:#b6e2f0; }
+.box#gallery .mini			{ width:90px; height:90px; float:left; clear:none; position:relative; top:5px; left:5px; }
+.box#gallery .name			{ font-weight:bold; font-size:.8em; float:right; width:195px; height:8px; }
+.box#gallery .comment		{ font-size:.7em; float:right; width:195px; height:13px; }
+.box#gallery .count			{ font-size:.7em; text-align:right; position:absolute; top:-5px; left:245px; width:50px; }
+.box#gallery .type			{ font-size:.75em; float:right; width:195px; text-transform:uppercase; letter-spacing:15px; color:#aaa; }
+/* Login box */
+.box#login					{ position:relative; top:-90px; }
+.box#login #login_text		{ font-weight:bold; font-size:.8em; position:relative; top:10px; left:8px; }
+.box#login #password_text	{ font-weight:bold; font-size:.8em; position:relative; top:10px; left:8px; }
+.box#login #login_input		{ position:relative; top:10px; left:8px; }
+.box#login #password_input	{ position:relative; top:10px; left:8px; }
+.box#login #register		{ font-size:.65em; position:relative; top:6px; left:8px; }
+.box#login input[type=submit]	{ position:relative; top:13px; left:10px; width:109px; }
+/* All box */
+.box#all					{ background:#a3f7d8; font-size:2em; letter-spacing:15px; text-align:center; padding-top:30px; height:70px !important; }
+
+/* ---------------- SMALL BOXES ---------------- */
+.smallbox					{ border:1px solid; width:155px; height:155px; overflow:hidden; position:relative; }
+/* Photo box */
+.smallbox#photo				{ background:#ffffbf; }
+.smallbox#photo .mini		{ width:145px; clear:both; position:relative; top:5px; left:5px; }
+.smallbox#photo .comment	{ font-size:.7em; width:145px; text-align:center; position:relative; left:5px; }
+
+/* ---------------- HEADER ---------------- */
+#header						{ border-bottom:1px solid; width:100%; height:115px; position:fixed; }
+#header #logo				{ position:relative; left:10px; top:20px; font-size:3em; }
+#header #logo2				{ position:relative; top:35px; font-size:1.1em; }
+#header #view_container		{ position:relative; left:315px; top:20px; }
+#header #view_container td	{ border:1px solid; padding:3px; background:#fba971; border-radius:8px; }
+#header #view_container td#selected	{ background:#f98638; }
+#header #view_container td a	{ text-decoration:none; color:#000; }
+#header #login_container	{ float:right; position:relative; top:7px; right:10px; }
+
+/* ---------------- SIDEBAR ---------------- */
+#sidebar					{ border-right:1px solid; width:314px; position:fixed; top:115px; bottom:30px; float:left; background:#ebebeb; }
+#sidebar .sidebar_container	{ position:relative; left:6px; margin-top:10px; }
+#sidebar .sidebar_container a	{ text-decoration:none; color:#000; }
+#sidebar .close				{ background:#f00; height:15px; width:15px; position:relative; top:-108px; left:292px; border-radius:15px; }
+#sidebar .ad_container		{ position:absolute; left:6px; bottom:10px; }
+
+/* ---------------- CONTENT ---------------- */
+#content					{ position:fixed; top:115px; bottom:30px; left:314px; right:0px; overflow:auto; }
+#content .content_container	{ margin-top:10px; margin-left:10px; display:inline-block; }
+#content .content_container a	{ text-decoration:none; color:#000; }
+#content #nocontent			{ color:#bbb; font-weight:bold; font-size:2em; position:fixed; top:250px; bottom:30px; left:314px; right:0px; text-align:center; }
+
+/* ---------------- FOOTER ---------------- */
+#footer						{ position:fixed; bottom:0px; width:100%; height:30px; border-top:1px solid; }
+#footer a					{ text-decoration:none; border-bottom:1px dashed; color:000; }
+#footer a:hover				{ border:1px dotted; color:#b94123; }
+#footer #footer_menu		{ float:left; position:relative; top:5px; }
+#footer #footer_menu a		{ margin-left:10px; margin-right:10px; }
+#footer #copyright			{ float:right; position:relative; top:5px; margin-right:10px; }

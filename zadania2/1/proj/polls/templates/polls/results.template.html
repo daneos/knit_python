@@ -1,0 +1,13 @@
+{% extends "generic.template.html" %}
+
+{% block content %}
+	<h1>Poll results: {{ poll.question }}</h1>
+	<ul>
+		{% for choice in poll.choice_set.all %}
+		<li>
+			{{ choice.choice }} -- {{ choice.votes }}
+			vote{{ choice.votes|pluralize }}
+		</li>
+		{% endfor %}
+	</ul>
+{% endblock %}
