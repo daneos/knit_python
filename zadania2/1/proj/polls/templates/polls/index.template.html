@@ -8,7 +8,8 @@
 	{% if latest_poll_list %}
 		<ul>
 			{% for poll in latest_poll_list %}
-				<li><a href="/polls/{{ poll.id }}/">{{ poll.question }}</a></li>
+				<li><a style="margin-right:15px;" href="/polls/{{ poll.id }}/">{{ poll.question }}</a>
+				<small>{{ poll.total_votes }} vote{{ poll.total_votes|pluralize }}</small></li>
 			{% endfor %}
 		</ul>
 	{% else %}

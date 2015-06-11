@@ -8,9 +8,9 @@
 	<ul>
 		{% for choice in poll.choice_set.all %}
 		<li>
-			{{ choice.choice }} -- {{ choice.votes }}
-			vote{{ choice.votes|pluralize }}
+			<b>{{ choice.percentage }}%</b> {{ choice.choice }}
 		</li>
 		{% endfor %}
 	</ul>
+	<small style="float:right;">Total votes: {{ poll.total_votes }}</small>
 {% endblock %}
