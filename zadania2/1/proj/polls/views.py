@@ -6,7 +6,7 @@ from polls.models import Choice, Poll
 
 def index(request):
 	""" Strona glowna - lista ankiet """
-	latest_poll_list = Poll.objects.all().order_by('-date')[:5]
+	latest_poll_list = Poll.objects.all().order_by('-date')
 	return render_to_response('polls/index.template.html', {'latest_poll_list': latest_poll_list})
 
 def detail(request, poll_id):

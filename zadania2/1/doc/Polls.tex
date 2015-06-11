@@ -1,0 +1,43 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{polski}
+\usepackage{graphicx}
+
+\newcommand{\screenshot}[1]{\\\begin{minipage}[c]{\textwidth}\hspace{0em}\includegraphics[width=\textwidth]{#1}\end{minipage}\vspace{0em}}
+
+\title{Aplikacja \emph{Polls}}
+\author{Grzegorz Kowalski\\\texttt{daneos@daneos.com}}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+\emph{Polls} to aplikacja webowa stworzona przy użyciu frameworku Django. Udostępnia prosty system ankiet wraz z panelem administracyjnym.\\
+Ankiety identyfikowane są przez automatycznie przypisywany numer. Dostępna jest również lista wszystkich ankiet, oraz widoczne dla użytkowników wyniki ankiet w formacie procentowym.\\
+Panel administracyjny udostępnia opcje dodawania, usuwania i modyfikacji ankiet.
+\end{abstract}
+
+\section{Lista ankiet}
+Po wejściu na adres URL aplikacji otrzymujemy widok dostępnych w systemie ankiet, posortowanych według daty dodania, zaczynając od najnowszych.
+\screenshot{poll_list.png}
+Kliknięcie na tytuł ankiety przenosi nas do widoku pojedyńczej ankiety.
+
+\newpage
+\section{Ankieta}
+Widok ankiety pokazuje pytanie oraz dostępne odpowiedzi w formie formularza do głosowania.
+\screenshot{poll.png}
+Kliknięcie przycisku \emph{Vote!} powoduje zapisanie zaznaczonej opcji, oraz przejście do wyników głosowania. Jeśli żadna opcja nie była zaznaczona, wyświetlony zostanie komunikat o błędzie. Do wyników ankiety można również przejść klikając link \emph{View results} w prawym dolnym rogu ankiety.
+
+\section{Wyniki}
+Widok wyników prezentuje procentowy udział odpowiedzi w całości głosów.
+\screenshot{poll_results.png}
+W prawym dolnym rogu widoczna jest całkowita ilość głosów oddanych w ankiecie.
+
+\newpage
+\section{Panel administracyjny}
+Automatycznie generowany panel administracyjny pozwala na dodawanie nowych ankiet oraz modyfikację lub usuwanie istniejących.
+\screenshot{admin.png}
+Do każdej ankiety można dodać dowolną ilość odpowiedzi.
+
+\end{document}
