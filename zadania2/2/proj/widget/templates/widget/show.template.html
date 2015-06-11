@@ -1,27 +1,38 @@
 {% block DeviceWidget %}
 
-	<div id="device-widget">
-		<h2>{{ device }}</h2>
-		<small>connection: {{ connection }}</small>
+	<style>
+		#widget				{border:1px solid; display:inline-block;}
+		#widget div			{text-align:center;}
+		#widget table		{border-collapse:collapse;}
+		#widget tr			{border-top:1px solid;}
+		#widget tr:hover	{background:#8ae887;}
+		#widget tr.header	{background:none !important;}
+		#widget th,td		{border-right:1px dotted; padding:5px;}
+		#widget .noborder	{border:none !important;}
+	</style>
+
+	<div id="widget">
+		<div>
+			<h2>{{ device }}</h2>
+			<small>connection: {{ connection }}</small>
+		</div>
 		<table>
-			<tr>
+			<tr class="header noborder">
 				<th>Name</th>
 				<th>Value</th>
 				<th>Scalar</th>
 				<th>Numeric</th>
 				<th>Writable</th>
-				<th>Plotable</th>
-				<th>Description</th>
+				<th class="noborder">Plotable</th>
 			</tr>
 			{% for at in attrs %}
-				<tr>
+				<tr title="{{ at.Desc|safe }}">		{# uzywam filtra safe poniewaz w opisie wystepuje kod HTML (&#13;) #}
 					<td>{{ at.Name }}</td>
 					<td>{{ at.Value }}</td>
 					<td>{{ at.Scalar }}</td>
 					<td>{{ at.Numeric }}</td>
 					<td>{{ at.Writable }}</td>
-					<td>{{ at.Plotable }}</td>
-					<td>{{ at.Desc|safe }}</td>
+					<td class="noborder">{{ at.Plotable }}</td>
 				</tr>
 			{% endfor %}
 		</table>
