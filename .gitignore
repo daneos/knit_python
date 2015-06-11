@@ -60,3 +60,6 @@ target/
 *.aux
 *.log
 *.pdf
+
+# Databases
+*.sqlite3

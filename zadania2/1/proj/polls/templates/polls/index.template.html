@@ -1,7 +1,10 @@
 {% extends "generic.template.html" %}
 
-{% block content %}
+{% block header %}
 	<h1>Poll list</h1>
+{% endblock %}
+
+{% block content %}
 	{% if latest_poll_list %}
 		<ul>
 			{% for poll in latest_poll_list %}

@@ -1,8 +1,13 @@
 {% extends "generic.template.html" %}
 
-{% block content %}
+{% block header %}
 	<h1>{{ poll.question }}</h1>
-	{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+{% endblock %}
+
+{% block content %}
+	{% if error_message %}
+		<p><strong>{{ error_message }}</strong></p>
+	{% endif %}
 
 	<form action="/polls/{{ poll.id }}/vote/" method="post">
 		{% csrf_token %}
