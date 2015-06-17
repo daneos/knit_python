@@ -2,7 +2,9 @@ from django.shortcuts import render_to_response
 from widget.models import Device
 
 def show(request, device):
-	""" Widok widgetu - pokazuje atrybuty urzadzenia """
+	""" Widok widgetu - pokazuje atrybuty urzadzenia
+		Jesli jest przekazany parametr GET ?action=update
+		zwraca tylko tabele z danymi. Jesli nie, zwraca pelna strone """
 	d = Device(device, True)
 
 	if not d.error:
