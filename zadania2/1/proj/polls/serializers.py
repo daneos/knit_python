@@ -1,27 +1,18 @@
-import json
-from django.core.serializers.python import Serializer
-from django.core.serializers.json import DjangoJSONEncoder
+def PollSerializer(p, detail=True, results=False):
+	data = {}
+	data['id'] = p.id
+	data['question'] = p.question
+	data['date'] = str(p.date)
+	if detail or results:
+		data['choices'] = [ ChoiceSerializer(c, results) for c in p.choice_set.all()]
+	if results:
+		data['total_votes'] = p.total_votes()
+	return data
 
-class JSONSerializer(Serializer):
-	def get_dump_object(self, obj):
-		data = self._current
-		if not self.selected_fields or 'id' in self.selected_fields:
-			data['id'] = obj.id
-		if hasattr(obj, 'choice_set'):
-			data['choices'] = self.serialize(obj.choice_set.all(), fields=('id', 'choice'))
-		return data
-
-	def end_object(self, obj):
-		if not self.first:
-			self.stream.write(', ')
-		json.dump(self.get_dump_object(obj), self.stream, cls=DjangoJSONEncoder)
-		self._current = None
-
-	def start_serialization(self):
-		self.stream.write("[")
-
-	def end_serialization(self):
-		self.stream.write("]")
-
-	def getvalue(self):
-		return super(Serializer, self).getvalue()	
+def ChoiceSerializer(c, results=False):
+	data = {}
+	data['id'] = c.id
+	data['choice'] = c.choice
+	if results:
+		data['votes'] = c.votes
+	return data

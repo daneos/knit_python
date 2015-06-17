@@ -1,3 +1,5 @@
+import json
+
 from django.shortcuts import render_to_response, get_object_or_404
 from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
@@ -5,27 +7,27 @@ from django.core.serializers import serialize
 from django.template.context_processors import csrf
 
 from polls.models import Choice, Poll
-from polls.serializers import JSONSerializer
+from polls.serializers import PollSerializer, ChoiceSerializer
 
 def index(request):
 	""" Strona glowna - lista ankiet """
 	latest_poll_list = Poll.objects.all().order_by('-date')		# sortowanie od najnowszego
-	req_format = request.GET.get('format', None);
+	req_format = request.GET.get('format', None)
 	
 	if req_format == "json":
-		serializer = JSONSerializer()
-		return HttpResponse(serializer.serialize(latest_poll_list), content_type="application/json")
+		return HttpResponse(json.dumps([ PollSerializer(p, detail=False) for p in latest_poll_list ]),
+							content_type="application/json")
 	else:
 		return render_to_response('polls/index.template.html', {'latest_poll_list': latest_poll_list})
 
 def detail(request, poll_id):
 	""" Widok szczegolowy ankiety - formularz glosowania """
 	p = get_object_or_404(Poll, pk=poll_id)
-	req_format = request.GET.get('format', None);
+	req_format = request.GET.get('format', None)
 	
 	if req_format == "json":
-		serializer = JSONSerializer()
-		return HttpResponse(serializer.serialize([p]), content_type="application/json")		# serializer wymaga obiektu iterable
+		return HttpResponse(json.dumps(PollSerializer(p)),
+							content_type="application/json")
 	else:
 		context = {'poll': p}
 		context.update(csrf(request))		# ochrona przed CSRF
@@ -54,10 +56,10 @@ def vote(request, poll_id):
 def results(request, poll_id):
 	""" Widok wynikow ankiety """
 	p = get_object_or_404(Poll, pk=poll_id)
-	req_format = request.GET.get('format', None);
+	req_format = request.GET.get('format', None)
 
 	if req_format == "json":
-		serializer = JSONSerializer()
-		return HttpResponse(serializer.serialize([p]), content_type="application/json")		# serializer wymaga obiektu iterable
+		return HttpResponse(json.dumps(PollSerializer(p, results=True)),
+							content_type="application/json")
 	else:
 		return render_to_response('polls/results.template.html', {'poll': p})
