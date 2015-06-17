@@ -1,0 +1,71 @@
+{% block DeviceWidget %}
+<html>
+	<head>
+		<style>
+			#widget				{border:1px solid; display:inline-block;}
+			#widget div			{text-align:center;}
+			#widget div#url		{display:none;}
+			#widget div.error	{color:#f00;}
+			#widget table		{border-collapse:collapse;}
+			#widget tr			{border-top:1px solid;}
+			#widget tr:hover	{background:#8ae887;}
+			#widget tr.header	{background:none !important;}
+			#widget th,td		{border-right:1px dotted; padding:5px;}
+			#widget .noborder	{border:none !important;}
+		</style>
+
+		<script type="text/javascript">
+			function update()
+			{
+				var xmlHttp;
+				var ajax_div = document.getElementById('ajax');
+				try
+				{	
+					xmlHttp = new XMLHttpRequest();		// wszystko co nie jest IE
+				}
+				catch (e)
+				{
+					try
+					{
+						xmlHttp = new ActiveXObject("Msxml2.XMLHTTP");		// Internet Explorer
+					}
+					catch (e)
+					{
+			    		try
+			    		{
+							xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");	// stary Internet Explorer
+						}
+						catch (e)
+						{
+							ajax_div.innerHTML = "Auto-update disabled. No AJAX available.";
+							return false;
+						}
+					}
+				}
+				xmlHttp.onreadystatechange = function()
+				{
+					document.getElementById('reload').innerHTML = xmlHttp.responseText;
+				}
+			
+				var requestURL = document.getElementById('url').innerHTML + "?action=update";
+				xmlHttp.open("GET", requestURL, true);
+				xmlHttp.send(null);
+			}
+		</script>
+	</head>
+	<body onload="setInterval('update()', 5000)">
+		<div id="widget">
+			<div>
+				<h2>{{ device }}</h2>
+				<small>connection: {{ connection }}</small>
+			</div>
+				<div id="reload">
+					{% include 'widget/content.template.html' %}	{# content jest wyswietlany rowniez przy zwyklym requescie #}
+				</div>												{# w razie gdyby AJAX nie byl dostepny #}
+				<div class="error" id="ajax"></div>
+				<div id="url">{{ url }}</div>
+		</div>
+	</body>
+</html>
+
+{% endblock %}
