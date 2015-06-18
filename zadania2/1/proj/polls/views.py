@@ -5,6 +5,7 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
 from django.core.serializers import serialize
 from django.template.context_processors import csrf
+from django.views.decorators.csrf import csrf_exempt
 
 from SOAPpy import SOAPBuilder
 
@@ -32,6 +33,7 @@ def detail(request, poll_id):
 	""" Widok szczegolowy ankiety - formularz glosowania """
 	p = get_object_or_404(Poll, pk=poll_id)
 	req_format = request.GET.get('format', None)
+	
 	if req_format:
 		serialized = PollSerializer(p)
 		if req_format == 'json':
@@ -46,23 +48,38 @@ def detail(request, poll_id):
 		context.update(csrf(request))		# ochrona przed CSRF
 		return render_to_response('polls/detail.template.html', context)
 
+@csrf_exempt								# inaczej nie dziala json ani soap, wymaga csrf, wyrzuca blad niezaleznie od wejscia
 def vote(request, poll_id):
 	""" Obsluga glosow """
 	if request.method == 'POST':
 		p = get_object_or_404(Poll, pk=poll_id)
-		try:
-			selected_choice = p.choice_set.get(pk=request.POST['choice'])
-		except (KeyError, Choice.DoesNotExist):
-			context = {
-				'poll': p,
-				'error_message': "No choice was selected",
-			}
-			context.update(csrf(request))	# ochrona przed CSRF
-			return render_to_response('polls/detail.template.html', context)
+		req_format = request.GET.get('format', None)
+
+		if req_format:
+			if req_format == 'json':
+				try:
+					selected_choice = json.loads(request.POST)
+					dir(selected_choice)
+				except Exception as e:
+					return HttpResponse(json.dumps("Invalid JSON input."),
+										content_type="application/json")
+
+			if req_format == 'soap':
+				pass
 		else:
-			selected_choice.votes += 1
-			selected_choice.save()			# zapis oddanego glosu
-			return HttpResponseRedirect(reverse('polls.views.results', args=(p.id,)))
+			try:
+				selected_choice = p.choice_set.get(pk=request.POST['choice'])
+			except (KeyError, Choice.DoesNotExist):
+				context = {
+					'poll': p,
+					'error_message': "No choice was selected",
+				}
+				context.update(csrf(request))	# ochrona przed CSRF
+				return render_to_response('polls/detail.template.html', context)
+
+		selected_choice.votes += 1
+		selected_choice.save()			# zapis oddanego glosu
+		return HttpResponseRedirect(reverse('polls.views.results', args=(p.id,)))
 	else:
 		return detail(request, poll_id)		# jesli metoda nie jest POST zwraca widok ankiety
 
