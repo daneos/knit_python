@@ -8,6 +8,7 @@ from django.template.context_processors import csrf
 from django.views.decorators.csrf import csrf_exempt
 
 from SOAPpy import SOAPBuilder
+from SOAPpy.Parser import parseSOAP
 
 from polls.models import Choice, Poll
 from polls.serializers import PollSerializer, ChoiceSerializer
@@ -25,7 +26,7 @@ def index(request):
 		if req_format == 'soap':
 			soap = SOAPBuilder(args=serialized)
 			return HttpResponse(soap.build(),
-								content_type='text/plain') #content_type='application/soap+xml')
+								content_type='application/soap+xml')
 	else:
 		return render_to_response('polls/index.template.html', {'latest_poll_list': latest_poll_list})
 
@@ -42,7 +43,7 @@ def detail(request, poll_id):
 		if req_format == 'soap':
 			soap = SOAPBuilder(args=serialized)
 			return HttpResponse(soap.build(),
-								content_type='text/plain') #content_type='application/soap+xml')
+								content_type='application/soap+xml')
 	else:
 		context = {'poll': p}
 		context.update(csrf(request))		# ochrona przed CSRF
@@ -53,17 +54,23 @@ def vote(request, poll_id):
 	""" Obsluga glosow """
 	if request.method == 'POST':
 		p = get_object_or_404(Poll, pk=poll_id)
-		req_format = request.GET.get('format', None)
+		req_format = request.GET.get('format', None)				# nawet przy POST parametry URL sa w zmiennej GET
 
 		if req_format:
 			if req_format == 'json':
 				try:
 					ch = json.loads(request.body)['choice']			# numer wybranej opcji z JSON
 				except Exception as e:
-					return HttpResponse(json.dumps('Invalid JSON input.'),
+					return HttpResponse(json.dumps('Invalid JSON input: ' + e),
 										content_type='application/json')
 			if req_format == 'soap':
-				pass
+				try:
+					ch = parseSOAP(request.body)['v1']['choice']
+				except Exception as e:
+					soap = SOAPBuilder(args={'error':'Invalid SOAP input: ' + e})
+					return HttpResponse(soap.build(),
+										content_type='application/soap+xml')
+
 		else:
 			ch = request.POST['choice']								# numer wybranej opcji z POST
 			
@@ -76,7 +83,9 @@ def vote(request, poll_id):
 					return HttpResponse(json.dumps('Invalid choice or no choice.'),
 										content_type='application/json')
 				if req_format == 'soap':
-					pass
+					soap = SOAPBuilder(args={'error':'Invalid choice or no choice.'})
+					return HttpResponse(soap.build(),
+										content_type='application/soap+xml')
 			else:
 				context = {
 					'poll': p,
@@ -105,6 +114,6 @@ def results(request, poll_id):
 		if req_format == 'soap':
 			soap = SOAPBuilder(args=serialized)
 			return HttpResponse(soap.build(),
-								content_type='text/plain') #content_type='application/soap+xml')
+								content_type='application/soap+xml')
 	else:
 		return render_to_response('polls/results.template.html', {'poll': p})

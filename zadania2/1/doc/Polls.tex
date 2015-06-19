@@ -156,7 +156,29 @@ Pobieranie ankiety w formacie SOAP: \soap{/polls/\emph{<id>}/}
   </SOAP-ENV:Body>
 </SOAP-ENV:Envelope>
 \end{verbatim}
-%Głosowanie za pomocą SOAP... \emph{To be continued...}
+Głosowanie za pomocą SOAP odbywa się podobnie jak w przypdaku JSON. Przykład:
+\begin{verbatim}
+POST /polls/1/vote/?format=soap HTTP/1.1
+Host: localhost
+Content-Type: application/soap+xml
+Content-Length: 479
+
+<?xml version="1.0" encoding="UTF-8"?>
+<SOAP-ENV:Envelope
+  SOAP-ENV:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+  xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/"
+  xmlns:xsi="http://www.w3.org/1999/XMLSchema-instance"
+  xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/"
+  xmlns:xsd="http://www.w3.org/1999/XMLSchema"
+>
+  <SOAP-ENV:Body>
+    <v1 SOAP-ENC:root="1">
+      <choice xsi:type="xsd:int">3</choice>
+    </v1>
+  </SOAP-ENV:Body>
+</SOAP-ENV:Envelope>
+\end{verbatim}
+Tak samo jak w przypadku JSON, serwer odpowiada \texttt{302 Found} z odpowiednio ustawionym nagłówkiem \texttt{Location}.
 
 \section{Wyniki}
 Widok wyników prezentuje procentowy udział odpowiedzi w całości głosów.
@@ -237,6 +259,7 @@ Widok SOAP: \soap{/polls/\emph{<id>}/results/}
 \end{verbatim}
 Jak widać widok wyników od widoku ankiety rózni się tylko tym, że podana jest ilość wszystkich głosów i ilość głosów oddana na każdą opcję.
 
+\newpage
 \section{Panel administracyjny}
 Automatycznie generowany panel administracyjny pozwala na dodawanie nowych ankiet oraz modyfikację lub usuwanie istniejących.
 \screenshot{admin.png}
