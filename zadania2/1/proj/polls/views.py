@@ -58,21 +58,29 @@ def vote(request, poll_id):
 		if req_format:
 			if req_format == 'json':
 				try:
-					selected_choice = json.loads(request.POST)
-					dir(selected_choice)
+					ch = json.loads(request.body)['choice']			# numer wybranej opcji z JSON
 				except Exception as e:
-					return HttpResponse(json.dumps("Invalid JSON input."),
-										content_type="application/json")
-
+					return HttpResponse(json.dumps('Invalid JSON input.'),
+										content_type='application/json')
 			if req_format == 'soap':
 				pass
 		else:
-			try:
-				selected_choice = p.choice_set.get(pk=request.POST['choice'])
-			except (KeyError, Choice.DoesNotExist):
+			ch = request.POST['choice']								# numer wybranej opcji z POST
+			
+		try:
+			selected_choice = p.choice_set.get(pk=ch)				# pobieranie modelu opcji na podstwie numeru z requestu
+		except (KeyError, Choice.DoesNotExist):
+			
+			if req_format:
+				if req_format == 'json':
+					return HttpResponse(json.dumps('Invalid choice or no choice.'),
+										content_type='application/json')
+				if req_format == 'soap':
+					pass
+			else:
 				context = {
 					'poll': p,
-					'error_message': "No choice was selected",
+					'error_message': 'Invalid choice or no choice.',
 				}
 				context.update(csrf(request))	# ochrona przed CSRF
 				return render_to_response('polls/detail.template.html', context)
@@ -80,6 +88,7 @@ def vote(request, poll_id):
 		selected_choice.votes += 1
 		selected_choice.save()			# zapis oddanego glosu
 		return HttpResponseRedirect(reverse('polls.views.results', args=(p.id,)))
+
 	else:
 		return detail(request, poll_id)		# jesli metoda nie jest POST zwraca widok ankiety
 

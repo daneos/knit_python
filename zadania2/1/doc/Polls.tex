@@ -99,8 +99,27 @@ Wejście na adres np. \json{/polls/1/} zwróci przykładową ankietę:
   ]
 }
 \end{verbatim}
-%Głosowanie za pomocą JSON... \emph{To be continued...}\\\\
-Przykładowa ankieta w formacie SOAP: \soap{/polls/\emph{<id>}/}
+Głosowanie za pomocą JSON polega na wysłaniu zapytania POST z na adres \json{/polls/\emph{<id>}/vote/} w treści którego znajduje się obiekt JSON w postaci
+\texttt{\{"choice": \emph{<id\_wybranej\_opcji>}\}}, np.
+\begin{verbatim}
+POST /polls/1/vote/?format=json HTTP/1.1
+Host: localhost
+Content-Type: application/json
+Content-Length: 13
+
+{"choice": 1}
+\end{verbatim}
+Odpowiedzią serwera jest \texttt{302 Found} z nagłówkiem \texttt{Location} wskazującym na wyniki ankiety, dla przykładowego requesta:
+\begin{verbatim}
+HTTP/1.0 302 FOUND
+Date: Fri, 19 Jun 2015 16:41:16 GMT
+Server: WSGIServer/0.1 Python/2.7.6
+X-Frame-Options: SAMEORIGIN
+Content-Type: text/html; charset=utf-8
+Location: http://localhost/polls/1/results/
+\end{verbatim}
+\vspace{3em}
+Pobieranie ankiety w formacie SOAP: \soap{/polls/\emph{<id>}/}
 \begin{verbatim}
 <?xml version="1.0" encoding="UTF-8"?>
 <SOAP-ENV:Envelope
