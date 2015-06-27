@@ -1,0 +1,18 @@
+{% extends "generic.html" %}
+
+{% block header %}
+	<h1>Poll list</h1>
+{% endblock %}
+
+{% block content %}
+	{% if latest_poll_list %}
+		<ul>
+			{% for poll in latest_poll_list %}
+				<li><a style="margin-right:15px;" href="/poll/{{ poll.key.urlsafe }}">{{ poll.question }}</a>
+				<small>{{ poll.total_votes }} vote{{ poll.total_votes|pluralize }}</small></li>
+			{% endfor %}
+		</ul>
+	{% else %}
+		<p>No polls are available.</p>
+	{% endif %}
+{% endblock %}

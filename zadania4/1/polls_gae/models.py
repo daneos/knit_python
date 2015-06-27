@@ -2,6 +2,7 @@ from google.appengine.ext import ndb
 
 class Choice(ndb.Model):
 	""" Klasa odpowiedzi w ankiecie """
+	id = ndb.StringProperty()
 	choice = ndb.StringProperty()
 	votes = ndb.IntegerProperty()
 

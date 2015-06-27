@@ -9,13 +9,13 @@
 		<p><strong>{{ error_message }}</strong></p>
 	{% endif %}
 
-	<form action="/polls/{{ poll.key.urlsafe }}/vote/" method="post">
+	<form action="/poll/{{ poll.key.urlsafe }}" method="post">
 		{% csrf_token %}
 		{% for choice in poll.choices %}
-			<input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.key.urlsafe }}"/>
+			<input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}"/>
 			<label for="choice{{ forloop.counter }}">{{ choice.choice }}</label><br />
 		{% endfor %}
 		<input type="submit" value="Vote!" />
 	</form>
-	<small style="float:right;"><a href="/polls/{{ poll.key.urlsafe }}/results/">View results</a></small>
+	<small style="float:right;"><a href="/results/{{ poll.key.urlsafe }}">View results</a></small>
 {% endblock %}

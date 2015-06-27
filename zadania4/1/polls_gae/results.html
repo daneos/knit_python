@@ -1,0 +1,16 @@
+{% extends "generic.html" %}
+
+{% block header %}
+	<h1>Poll results: {{ poll.question }}</h1>
+{% endblock %}
+
+{% block content %}
+	<ul>
+		{% for choice in poll.choices %}
+		<li>
+			<b>{{ choice.votes }}</b> {{ choice.choice }}
+		</li>
+		{% endfor %}
+	</ul>
+	<small style="float:right;">Total votes: {{ poll.total_votes }}</small>
+{% endblock %}
