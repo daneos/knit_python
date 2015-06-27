@@ -75,7 +75,7 @@ def rest_sanitize_post(poll_list, json):
 	return poll_list
 
 def rest_sanitize_put(poll_list, json):
-	""" Interpretuje aktualizacje ankiety przez REST API """
+	""" Automatycznie aktualizuje total_votes w ankiecie """
 	for poll in poll_list:
 		poll.total_votes += 1
 	return poll_list

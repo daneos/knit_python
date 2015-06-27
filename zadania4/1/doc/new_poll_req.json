@@ -1,0 +1,11 @@
+POST /rest/poll HTTP/1.1
+Host: polls-989.appspot.com
+Content-Length: 94
+
+{
+	"question": "Czy jutro wstanie slonce?",
+	"choices": [
+		{ "choice": "Tak" },
+		{ "choice": "Nie" }
+	]
+}

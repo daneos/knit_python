@@ -1,0 +1,61 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{polski}
+\usepackage{graphicx}
+\usepackage{listingsutf8}
+
+\lstset{
+  basicstyle=\tiny,
+  frame=single,
+  showstringspaces=false
+}
+
+\newcommand{\screenshot}[1]{\\\begin{minipage}[c]{\textwidth}\hspace{0em}\includegraphics[width=\textwidth]{#1}\end{minipage}\vspace{0em}}
+\newcommand{\adres}[1]{\emph{http://polls-989.appspot.com/#1}}
+
+\title{Aplikacja \emph{Polls}}
+\author{Grzegorz Kowalski\\\texttt{daneos@daneos.com}}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+\emph{Polls} to aplikacja webowa stworzona przy użyciu Google App Engine. Obsługuje dodawanie i modyfikację ankiet przez interfejs webowy i REST API.\\
+Adres aplikacji to \adres{}, REST API dostępne jest pod adresem \adres{rest/poll}.
+\end{abstract}
+
+\section{Tworzenie ankiety}
+Wchodząc na \adres{create} mamy prosty formularz służący do dodawania ankiet.
+\screenshot{new_poll.png}
+Po zapisaniu danych aplikacja wyświetla link do nowo utworzonej ankiety.
+\screenshot{created.png}
+\newpage
+Aby dodać ankietę przez REST, należy wysłać następujący (przykładowy) request:
+\lstinputlisting{new_poll_req.json}
+Serwer odpowiada wysyłając utworzoną ankietę.
+
+\section{Lista ankiet}
+Po wejściu na adres URL aplikacji otrzymujemy widok dostępnych w systemie ankiet, posortowanych według daty dodania, zaczynając od najnowszych.
+\screenshot{poll_list.png}
+Kliknięcie na tytuł ankiety przenosi nas do widoku pojedyńczej ankiety.
+Wchodząc na adres REST API również dostajemy listę ankiet:
+\lstinputlisting{rest_poll_list.json}
+
+\section{Ankieta}
+Widok ankiety pokazuje pytanie oraz dostępne odpowiedzi w formie formularza do głosowania.
+\screenshot{poll.png}
+Kliknięcie przycisku \emph{Vote!} powoduje zapisanie zaznaczonej opcji, oraz przejście do wyników głosowania. Jeśli żadna opcja nie była zaznaczona, wyświetlony zostanie komunikat o błędzie. Do wyników ankiety można również przejść klikając link \emph{View results} w prawym dolnym rogu ankiety.\\
+Adres URL widoku ankiety to \adres{poll/<id>}\\
+Widok RESTowy ankiety:
+\lstinputlisting{rest_poll.json}
+Głosowanie za pomocą REST API polega na zaktualizowaniu wpisów \emph{choices} w ankiecie za pomocą HTTP PUT.
+\lstinputlisting{update_poll_req.json}
+
+\section{Wyniki}
+Widok wyników prezentuje ilość głosów na każdą z opcji.
+\screenshot{poll_results.png}
+W prawym dolnym rogu widoczna jest całkowita ilość głosów oddanych w ankiecie.
+W REST API za widok wyników służy widok ankiety, ponieważ przesyła wszystkie niezbędne informacje.
+
+\end{document}

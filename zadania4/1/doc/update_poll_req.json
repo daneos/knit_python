@@ -1,0 +1,18 @@
+PUT /rest/poll/agtzfnBvbGxzLTk4OXIRCxIEUG9sbBiAgICA-MKECgw HTTP/1.1
+Host: polls-989.appspot.com
+Content-Length: 177
+
+{
+	"choices": [
+		{
+			"id": "agtzfnBvbGxzLTk4OXIPCxIGQ2hvaWNlIgNUYWsM",
+			"choice": "Tak",
+			"votes": 0
+		},
+		{
+			"id": "agtzfnBvbGxzLTk4OXIPCxIGQ2hvaWNlIgNOaWUM",
+			"choice": "Nie",
+			"votes": 1
+		}
+	]
+}

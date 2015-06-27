@@ -1,0 +1,18 @@
+{
+	"date": "2015-06-27T18:36:02.040950",
+	"choices": [
+		{
+			"votes": 0,
+			"id": "agtzfnBvbGxzLTk4OXIPCxIGQ2hvaWNlIgNUYWsM",
+			"choice": "Tak"
+		},
+		{
+			"votes": 1,
+			"id": "agtzfnBvbGxzLTk4OXIPCxIGQ2hvaWNlIgNOaWUM",
+			"choice": "Nie"
+		}
+	],
+	"question": "Czy jutro wstanie slonce?",
+	"id": "agtzfnBvbGxzLTk4OXIRCxIEUG9sbBiAgICA-MKECgw",
+	"total_votes": 1
+}

@@ -1,0 +1,51 @@
+{
+	"next_results_url": null,
+	"results": [
+		{
+			"date": "2015-06-27T18:33:19.902270",
+			"choices": [
+				{
+					"votes": 0,
+					"id": "agtzfnBvbGxzLTk4OXIcCxIG...
+					"choice": "Bu\u0142ka z chlebem"
+				},
+				{
+					"votes": 0,
+					"id": "agtzfnBvbGxzLTk4OXIkCxIG...
+					"choice": "Chleb posmarowany no\u017cem"
+				},
+				{
+					"votes": 1,
+					"id": "agtzfnBvbGxzLTk4OXIZCxIG...
+					"choice": "Woda na mokro"
+				},
+				{
+					"votes": 0,
+					"id": "agtzfnBvbGxzLTk4OXIPCxIGQ...
+					"choice": "Nic"
+				}
+			],
+			"question": "Co dzi\u015b na obiad?",
+			"id": "agtzfnBvbGxzLTk4OXIRCxIEUG9sbBiAgICAgICACgw",
+			"total_votes": 1
+		},
+		{
+			"date": "2015-06-27T18:36:02.040950",
+			"choices": [
+				{
+					"votes": 0,
+					"id": "agtzfnBvbGxzLTk4OXIPCxIGQ2hvaWNlIgNUYWsM",
+					"choice": "Tak"
+				},
+				{
+					"votes": 0,
+					"id": "agtzfnBvbGxzLTk4OXIPCxIGQ2hvaWNlIgNOaWUM",
+					"choice": "Nie"
+				}
+			],
+			"question": "Czy jutro wstanie slonce?",
+			"id": "agtzfnBvbGxzLTk4OXIRCxIEUG9sbBiAgICA-MKECgw",
+			"total_votes": 0
+		}
+	]
+}
