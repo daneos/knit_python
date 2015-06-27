@@ -4,7 +4,7 @@ from google.appengine.ext import ndb
 from rest_gae import *
 
 from templates import render
-from models import Poll, Choice, ancestor
+from models import Poll, Choice
 
 def get_or_404(instance, key):
 	""" Pobiera obiekt lub rzuca wyjatek jesli obiekt nie istnieje """
@@ -19,7 +19,7 @@ def get_or_404(instance, key):
 class Home(webapp2.RequestHandler):
 	""" Widok strony glownej - lista ankiet """
 	def get(self):
-		query = Poll.query(ancestor=ancestor()).order(-Poll.date)
+		query = Poll.query().order(-Poll.date)
 		polls = query.fetch()
 		self.response.write(render('home.html', { 'latest_poll_list':polls }))
 
@@ -57,13 +57,28 @@ class Create(webapp2.RequestHandler):
 		self.response.write(render('create.html', {}))
 	
 	def post(self):
-		new_poll = Poll(parent=ancestor())
+		new_poll = Poll()
 		new_poll.question = self.request.get('question')
 		new_poll.total_votes = 0
 		new_poll.choices = [ Choice(id=ndb.Key(Choice,c).urlsafe(), choice=c, votes=0) for c in self.request.POST.getall('choice') if c ]
 		new_poll.put()
 		url = '/poll/' + new_poll.key.urlsafe()
 		self.response.write('<pre>@ <a href="' + url + '">' + url + '</a></pre>')
+
+def rest_sanitize_post(poll_list, json):
+	""" Ustawia wymagane parametry w modelach przekazanych przez REST API """
+	for poll in poll_list:
+		for c in poll.choices:
+			c.id = ndb.Key(Choice, c.choice).urlsafe()
+			c.votes = 0
+		poll.total_votes = 0
+	return poll_list
+
+def rest_sanitize_put(poll_list, json):
+	""" Interpretuje aktualizacje ankiety przez REST API """
+	for poll in poll_list:
+		poll.total_votes += 1
+	return poll_list
 
 config = {}
 config['webapp2_extras.sessions'] = {
@@ -83,7 +98,9 @@ app = webapp2.WSGIApplication(
         		'POST': PERMISSION_ANYONE,
         		'PUT': PERMISSION_ANYONE,
         		'DELETE': PERMISSION_ANYONE
-      		}
+      		},
+      		before_post_callback=rest_sanitize_post,
+      		before_put_callback=rest_sanitize_put
       	)
 	],
 debug=True, config=config)

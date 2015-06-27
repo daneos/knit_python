@@ -12,7 +12,3 @@ class Poll(ndb.Model):
 	date = ndb.DateTimeProperty(auto_now_add=True)
 	total_votes = ndb.IntegerProperty()
 	choices = ndb.StructuredProperty(Choice, repeated=True)
-
-def ancestor():
-	""" Zwraca klucz uzywany jako wspolny przodek wszystkich ankiet """
-	return ndb.Key(Poll, 'polls')
