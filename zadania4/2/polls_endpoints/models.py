@@ -24,3 +24,10 @@ class Poll(EndpointsModel):
 	def id(self):
 		""" Zwraca ID z klucza, aby zachowac zgodnosc z wersja REST """
 		return self.key.urlsafe()
+
+	def set_selected(self, value):
+		self._selected = value
+
+	@EndpointsAliasProperty(setter=set_selected, required=True)
+	def selected_choice(self):
+		return getattr(self, '_selected', None)

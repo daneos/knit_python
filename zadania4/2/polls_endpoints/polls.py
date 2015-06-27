@@ -6,9 +6,9 @@ from protorpc import remote
 
 from models import Poll, Choice
 
-@endpoints.api(name='polls', version='v1', description='Polls API')
+@endpoints.api(name='polls', version='v1')
 class Polls(remote.Service):
-	""" Klasa API ankiet """
+	""" System ankiet: Endpoints API """
 
 	@Poll.method(path='polls', http_method='POST', name='polls.create', request_fields=('question', 'choices'))
 	def create(self, poll):
@@ -25,16 +25,23 @@ class Polls(remote.Service):
 		""" Lista ankiet """
 		return query.order(-Poll.date)
 
-	@Poll.method(request_fields=('id',), path='polls/{id}', http_method='GET', name='polls.get')
+	@Poll.method(path='polls/{id}', http_method='GET', name='polls.get', request_fields=('id',))
 	def get(self, poll):
 		""" Pojedyncza ankieta """
-  		if not poll.from_datastore:
-  			raise endpoints.NotFoundException('Poll not found.')
-  		return poll
+		if not poll.from_datastore:
+			raise endpoints.NotFoundException('Poll not found.')
+		return poll
 
-  	@Poll.method(path='polls/{id}', http_method='PUT', name='polls.vote', request_fields=('id',))
-  	def vote(self, poll, choice):
-  		""" Glosowanie w ankiecie """
-  		pass
+	@Poll.method(path='polls/{id}', http_method='PUT', name='polls.vote', request_fields=('id', 'selected_choice'))
+	def vote(self, poll):
+		""" Glosowanie w ankiecie """
+		if not poll.from_datastore:
+			raise endpoints.NotFoundException('Poll not found.')
+		for c in poll.choices:
+			if c.id == poll.selected_choice:
+				c.votes += 1
+		poll.total_votes += 1
+		poll.put()
+		return poll
 
 app = endpoints.api_server([Polls], restricted=False)
