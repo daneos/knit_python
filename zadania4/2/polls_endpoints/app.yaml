@@ -1,0 +1,13 @@
+application: potent-clarity-98922
+version: 1
+runtime: python27
+api_version: 1
+threadsafe: true
+
+handlers:
+- url: /_ah/spi/.*
+  script: polls.app
+
+libraries:
+- name: endpoints
+  version: latest
