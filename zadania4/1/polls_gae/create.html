@@ -1,0 +1,18 @@
+{% extends "generic.html" %}
+
+{% block header %}
+	<h1>New poll</h1>
+{% endblock %}
+
+{% block content %}
+	<form action="/create" method="post">
+		Question: <input type="text" name="question"><br>
+		Choices:<br>
+		<input type="text" name="choice"><br>
+		<input type="text" name="choice"><br>
+		<input type="text" name="choice"><br>
+		<input type="text" name="choice"><br>
+		<input type="text" name="choice"><br>
+		<input type="submit" value="Save">
+	</form>
+{% endblock %}

@@ -1,0 +1,21 @@
+{% extends "generic.html" %}
+
+{% block header %}
+	<h1>{{ poll.question }}</h1>
+{% endblock %}
+
+{% block content %}
+	{% if error_message %}
+		<p><strong>{{ error_message }}</strong></p>
+	{% endif %}
+
+	<form action="/polls/{{ poll.key.urlsafe }}/vote/" method="post">
+		{% csrf_token %}
+		{% for choice in poll.choices %}
+			<input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.key.urlsafe }}"/>
+			<label for="choice{{ forloop.counter }}">{{ choice.choice }}</label><br />
+		{% endfor %}
+		<input type="submit" value="Vote!" />
+	</form>
+	<small style="float:right;"><a href="/polls/{{ poll.key.urlsafe }}/results/">View results</a></small>
+{% endblock %}
