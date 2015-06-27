@@ -1,6 +1,8 @@
 import webapp2
 from google.appengine.ext import ndb
 
+from rest_gae import *
+
 from templates import render
 from models import Poll, Choice, ancestor
 
@@ -49,7 +51,7 @@ class Results(webapp2.RequestHandler):
 		poll = get_or_404(self, poll_id)
 		self.response.write(render('results.html', { 'poll':poll }))
 
-class Creator(webapp2.RequestHandler):
+class Create(webapp2.RequestHandler):
 	""" Widok tworzenia nowej ankiety """
 	def get(self):
 		self.response.write(render('create.html', {}))
@@ -63,11 +65,25 @@ class Creator(webapp2.RequestHandler):
 		url = '/poll/' + new_poll.key.urlsafe()
 		self.response.write('<pre>@ <a href="' + url + '">' + url + '</a></pre>')
 
+config = {}
+config['webapp2_extras.sessions'] = {
+    'secret_key': 'secret',
+}
+
 app = webapp2.WSGIApplication(
 	[
 		('/', Home),
 		('/poll/(.*)', Polls),
 		('/results/(.*)', Results),
-		('/create', Creator)
+		('/create', Create),
+		RESTHandler('/rest/poll',
+			Poll,
+			permissions={
+        		'GET': PERMISSION_ANYONE,
+        		'POST': PERMISSION_ANYONE,
+        		'PUT': PERMISSION_ANYONE,
+        		'DELETE': PERMISSION_ANYONE
+      		}
+      	)
 	],
-debug=True)
+debug=True, config=config)
