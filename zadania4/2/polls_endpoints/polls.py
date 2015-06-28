@@ -37,9 +37,13 @@ class Polls(remote.Service):
 		""" Glosowanie w ankiecie """
 		if not poll.from_datastore:
 			raise endpoints.NotFoundException('Poll not found.')
+		exists = False
 		for c in poll.choices:
 			if c.id == poll.selected_choice:
 				c.votes += 1
+				exists = True
+		if not exists:
+			raise endpoints.NotFoundException('Choice not foud.')
 		poll.total_votes += 1
 		poll.put()
 		return poll
