@@ -1,0 +1,45 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{polski}
+\usepackage{graphicx}
+
+\newcommand{\screenshot}[1]{\\\begin{minipage}[c]{\textwidth}\hspace{0em}\includegraphics[width=\textwidth]{#1}\end{minipage}\vspace{0em}}
+\newcommand{\adres}[1]{\emph{http://potent-clarity-98922.appspot.com/\_ah/api/#1}}
+
+\title{Aplikacja \emph{Polls}}
+\author{Grzegorz Kowalski\\\texttt{daneos@daneos.com}}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+\emph{Polls} to aplikacja obsługująca ankiety, stworzona przy użyciu Google Cloud Endpoints.\\
+Adres aplikacji to \adres{}.
+\end{abstract}
+
+\section{API Explorer}
+Google Cloud udostępnia API Explorer, dostępny pod adresem \adres{explorer}.
+\screenshot{api_list.png}
+
+\section{Tworzenie ankiety}
+Używając funkcji \emph{polls.polls.create} możemy utworzyć nową ankietę. Nie trzeba uzupełniać wszystkich pól, ponieważ większość (np.~klucze, data, ilość głosów) uzupełniane są automatycznie przez aplikację.\\
+Tworzenie odbywa się poprzez request POST.
+\screenshot{new_poll.png}
+Funkcja odpowiada wysyłając nowo utworzoną ankietę
+
+\section{Lista ankiet}
+Funkcja \emph{polls.polls.list} służy do pobrania listy dostępnych w systemie ankiet.
+\screenshot{poll_list.png}
+
+\section{Ankieta}
+Funkcja \emph{polls.polls.get} pobiera pojedyńczą ankietę na podstawie podanego ID.
+\screenshot{poll.png}
+
+\section{Głosowanie}
+Funkcja \emph{polls.polls.vote} służy do głosowania w ankiecie. Przyjmuje ID ankiety oraz ID wybranej odpowiedzi.
+Jest to realizowane za pomocą requestu PUT na adres ankiety.
+\screenshot{vote.png}
+Funkcja odpowiada wysyłając zaktualizowaną ankietę.
+
+\end{document}
